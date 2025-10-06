@@ -1,0 +1,310 @@
+{
+	"info": {
+		"_postman_id": "9b53b183-621b-466c-a035-409cf430a2be",
+		"name": "Chats",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27931274"
+	},
+	"item": [
+		{
+			"name": "Get user Chats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/users/:userId/chats",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						":userId",
+						"chats"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "68d57b46a9fe206a49727500"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Chat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\":\"68d57b46a9fe206a49727500\",\r\n    \"title\":\"KMRL test Chat\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/chats",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"chats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prompt",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"prompt\" : \"What is the total area of new Land to be Acquired for the JLN pallivaritton expansion project?\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/chats/:chatId/prompt",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"chats",
+						":chatId",
+						"prompt"
+					],
+					"variable": [
+						{
+							"key": "chatId",
+							"value": "68dff4c89525315b77432af9"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Chat By Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"prompt\" : \"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/chats/:chatId",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"chats",
+						":chatId"
+					],
+					"variable": [
+						{
+							"key": "chatId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"prompt\" : \"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/chats/:chatId",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"chats",
+						":chatId"
+					],
+					"variable": [
+						{
+							"key": "chatId",
+							"value": "68d592ef2e28f0665246dc69"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Doc",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/D:/HD/Downloads/sia-study-final-report-english- jln to palarivattom.pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/chats/:chat_id/upload",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"chats",
+						":chat_id",
+						"upload"
+					],
+					"variable": [
+						{
+							"key": "chat_id",
+							"value": "68dff4c89525315b77432af9"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Chat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\" : \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/chats/:chat_id/query",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"chats",
+						":chat_id",
+						"query"
+					],
+					"variable": [
+						{
+							"key": "chat_id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Doc Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/chats/:chatId/documents",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"chats",
+						":chatId",
+						"documents"
+					],
+					"variable": [
+						{
+							"key": "chatId",
+							"value": "68dff4c89525315b77432af9"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Vector DBs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/chats/vector-databases",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"chats",
+						"vector-databases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add response",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"response\" : \"This chatbot\\u2014powered by Perplexity AI\\u2014offers a comprehensive suite of functionalities designed for advanced, real-time information retrieval, deep research, and creative assistance across a wide range of topics. Below is a concise overview of what this chatbot can do for users.\\n\\n### Core Functionalities\\n\\n- **Answering Questions:** Provides factual, detailed, and well-cited answers to queries across domains such as technology, science, history, business, mathematics, and more.\\n- **Summarization:** Synthesizes long articles, documents, or web pages, distilling crucial points and contexts into concise summaries.\\n- **Complex Research:** Conducts in-depth analysis using real-time internet searches, referencing multiple authoritative sources, and compiling multi-step reports.\\n- **File and Image Analysis:** Supports uploads of documents (PDFs, text files) and images for extraction, summarization, or data analysis using AI models.\\n- **Code Assistance:** Offers programming help, algorithm explanations, code snippets, and data structure insights\\u2014especially useful for computer science students and developers.\\n- **Creative Inspiration:** Generates content ideas, drafts, and structured outlines for creative projects, ranging from technical documentation to artistic brainstorming.\\n\\n### Specialized Features\\n\\n- **Pro Search & Deep Research:** For subscribers, delivers even deeper research, accessing extensive context, and producing detailed project deliverables without query limits.\\n- **Thread Context Memory:** Remembers ongoing conversations to provide contextual answers and supports follow-up questions fluently.\\n- **Math and Data Analysis:** Explains mathematical concepts (with step-by-step LaTeX formatting), processes data, and generates charts/tables for clear visualization.\\n\\n### Platform-Specific Capabilities\\n\\n- **Multimodal Input:** Accepts text, files, code, and images for interactive queries.\\n- **Learning and Education:** Assists with explanations for coursework, algorithms, AI/ML concepts, and exam preparation.\\n- **Travel & Product Research:** Finds live product prices, creates travel itineraries, and summarizes reviews with up-to-date information.\\n- **API and Integration:** Provides access for developers seeking to embed Perplexity\\u2019s search and reasoning into their own applications via API.\\n\\n### Reliability and Support\\n\\n- **Source Transparency:** Every answer includes clear citations to sources for reference and verification.\\n- **Ad-Free and Privacy-First:** Pro version is ad-free and maintains user privacy\\u2014session and document data are not retained indefinitely.\\n- **Personalization and Priority Support:** Pro users enjoy prioritized response times and enhanced support for technical issues and feature requests.\\n\\nThus, the chatbot functions as a next-generation, always-on research assistant and learning companion, rapidly bridging the gap between questions and reliable answers, with a user-centered and developer-friendly design.\\n\\n***\\n\\n**References:**  \\nPerplexity AI's official help and feature overview  \\nPerplexity AI Pro Subscription and product documentation\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/chats/:chatId/response",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"chats",
+						":chatId",
+						"response"
+					],
+					"variable": [
+						{
+							"key": "chatId",
+							"value": "68d57bb6a9fe206a49727501"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
