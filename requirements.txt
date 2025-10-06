@@ -1,0 +1,16 @@
+dotenv
+flask == 3.1.1
+flask-cors
+pymongo == 4.15.1
+pydantic
+pydantic[email]
+perplexityai
+
+chromadb == 1.0.20
+
+langchain == 0.3.27
+langgraph == 0.6.5
+PyMuPDF == 1.26.3
+sentence-transformers == 5.1.0
+
+langchain-huggingface == 0.3.1
