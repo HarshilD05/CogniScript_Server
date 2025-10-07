@@ -87,6 +87,61 @@ CogniScript enables intelligent document-based conversations by combining the po
 
 ---
 
+## ⚙️ **LLM Provider Configuration**
+
+CogniScript uses **LangChain** framework for seamless integration with multiple Language Model providers. The server automatically routes prompts to your selected LLM provider based on environment configuration.
+
+### **🔄 How LLM Provider Selection Works**
+
+1. **Server Startup:** The system reads `LLM_PROVIDER` from your `.env` file
+2. **Provider Initialization:** LangChain creates the appropriate provider client (OpenAI, Gemini, etc.)
+3. **API Key Validation:** Verifies the corresponding API key is configured
+4. **Request Routing:** All chat prompts are automatically sent to the selected provider
+
+### **🎯 Available Providers**
+Configure `LLM_PROVIDER` in your `.env` file to one of these options:
+
+- **`Perplexity`** - Real-time web search capabilities
+- **`OpenAI`** - GPT models (gpt-3.5-turbo, gpt-4, etc.)
+- **`Gemini`** - Google's multimodal AI models
+- **`Groq`** - Ultra-fast inference hardware
+- **`Anthropic`** - Claude models for advanced reasoning
+
+### **🔧 Environment Configuration Example**
+```bash
+# Set your preferred LLM provider
+LLM_PROVIDER=Perplexity
+
+# Configure the corresponding API key
+PERPLEXITY_API_KEY=your_api_key_here
+```
+
+### **🎨 Custom Model Selection**
+To use specific models instead of defaults, modify the `DEFAULT_MODELS` dictionary in:
+```
+services/langchain_chatbot_service.py
+```
+
+**Current defaults:**
+- **OpenAI:** `gpt-4o-mini`
+- **Gemini:** `gemini-2.5-flash` 
+- **Groq:** `mixtral-8x7b-32768`
+- **Anthropic:** `claude-3-sonnet-20240229`
+- **Perplexity:** `sonar`
+
+**Example customization:**
+```python
+DEFAULT_MODELS = {
+    "OpenAI": "gpt-4",  # Change to GPT-4 instead of gpt-4o-mini
+    "Gemini": "gemini-pro",  # Use Gemini Pro
+    # ... other providers
+}
+```
+
+> **⚠️ Important:** Restart the server after changing provider settings or model configurations.
+
+---
+
 ## 🏗️ Architecture Overview
 
 CogniScript follows a modular, scalable architecture designed for production RAG applications:
@@ -193,12 +248,26 @@ curl -X POST http://localhost:3000/chats/{chat_id}/prompt \
 
 ## 🛠️ **Tech Stack**
 
-- **Backend:** Flask (Python)
-- **Vector Database:** ChromaDB
-- **Document Database:** MongoDB
-- **ML/NLP:** HuggingFace Transformers
-- **Document Processing:** PyPDF2, python-docx
-- **Text Processing:** LangChain text splitters
+### **🏗️ Core Framework**
+- **Backend Framework:** Flask (Python web server)
+- **LLM Orchestration:** **LangChain** - Modern conversation management and multi-provider LLM integration
+- **Vector Database:** ChromaDB - Semantic document search and retrieval
+- **Document Database:** MongoDB - User data, chat history, and metadata storage
+
+### **🤖 AI & Machine Learning**
+- **Language Models:** Multi-provider support via LangChain integrations:
+  - `langchain-openai` - OpenAI GPT models
+  - `langchain-google-genai` - Google Gemini models  
+  - `langchain-groq` - Groq ultra-fast inference
+  - `langchain-anthropic` - Anthropic Claude models
+  - `langchain-perplexity` - Perplexity real-time search models
+- **Embeddings:** HuggingFace Transformers (`sentence-transformers`)
+- **Text Processing:** LangChain text splitters and utilities
+
+### **📄 Document Processing**
+- **PDF Processing:** PyMuPDF - Advanced PDF text extraction
+- **Text Documents:** python-docx - Word document processing
+- **Text Chunking:** LangChain recursive character text splitter
 
 ---
 
@@ -225,10 +294,26 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 **Acknowledgments**
 
-- **ChromaDB** for providing an excellent vector database solution
-- **HuggingFace** for state-of-the-art embedding models
-- **LangChain** for text processing utilities
-- **Flask** community for the robust web framework
+### **🦜🔗 Core AI Framework**
+- **LangChain** - For the powerful LLM orchestration framework, modern conversation management patterns, and seamless multi-provider integrations
+
+### **🤖 AI & ML Providers**  
+- **OpenAI** - GPT models and API infrastructure
+- **Google** - Gemini models and AI capabilities
+- **Anthropic** - Claude models for advanced reasoning
+- **Groq** - Ultra-fast LLM inference hardware
+- **Perplexity** - Real-time web search AI models
+- **HuggingFace** - State-of-the-art embedding models and transformers library
+
+### **📊 Database & Storage**
+- **ChromaDB** - Excellent vector database solution for semantic search
+- **MongoDB** - Robust document database for scalable data storage
+
+### **🛠️ Development Tools**
+- **Flask** - Robust and flexible Python web framework
+- **PyMuPDF** - Advanced PDF processing capabilities
+- **python-docx** - Word document processing utilities
+- **Pydantic** - Data validation and settings management
 
 ---
 

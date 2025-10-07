@@ -64,7 +64,7 @@ class LangChainChatbotService:
     
     # Default model configurations for each provider
     DEFAULT_MODELS = {
-        "OpenAI": "gpt-3.5-turbo",
+        "OpenAI": "gpt-4o-mini",
         "Gemini": "gemini-2.5-flash",
         "Groq": "mixtral-8x7b-32768",
         "Anthropic": "claude-3-sonnet-20240229",
