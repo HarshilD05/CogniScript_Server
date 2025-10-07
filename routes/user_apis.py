@@ -127,6 +127,32 @@ def get_user_by_email(email):
         return jsonify({'error': 'Internal server error'}), 500
 
 
+@user_apis.route('/users', methods=['GET'])
+def get_all_users():
+    """Get all users with pagination"""
+    try:
+        # Get pagination parameters
+        limit = min(int(request.args.get('limit', 50)), 100)  # Max 100
+        skip = int(request.args.get('skip', 0))
+        
+        # Get all users
+        users = UserUtils.get_all_users(limit, skip)
+        
+        return jsonify({
+            'message': 'Users retrieved successfully',
+            'users': users,
+            'count': len(users),
+            'limit': limit,
+            'skip': skip
+        }), 200
+        
+    except ValueError as e:
+        return jsonify({'error': 'Invalid pagination parameters'}), 400
+    except Exception as e:
+        logger.error(f"[UserAPI] Error getting all users: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+
 @user_apis.route('/users/health', methods=['GET'])
 def user_health_check():
     """Health check endpoint for user APIs"""
@@ -135,6 +161,7 @@ def user_health_check():
         'service': 'user_apis',
         'endpoints': [
             'POST /users - Create user',
+            'GET /users - Get all users (with pagination)',
             'GET /users/{user_id} - Get user by ID',
             'GET /users/{user_id}/chats - Get user chats',
             'GET /users/email/{email} - Get user by email'

@@ -9,7 +9,7 @@ from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 from utils import ChatUtils, UserUtils
 from utils.chroma_utils import ChromaUtils
-from services.chatbot_service import get_chatbot_service
+from services.langchain_chatbot_service import get_langchain_chatbot_service
 import logging
 
 # Create a Blueprint for chat routes
@@ -112,9 +112,9 @@ def add_prompt_to_chat(chat_id):
         if not chat:
             return jsonify({'error': 'Chat not found'}), 404
         
-        # Process prompt with chatbot service (RAG + LLM workflow)
+        # Process prompt with LangChain chatbot service (RAG + LLM workflow)
         try:
-            chatbot_service = get_chatbot_service()
+            chatbot_service = get_langchain_chatbot_service()
             
             # Use asyncio to handle the async method
             loop = asyncio.new_event_loop()
@@ -241,10 +241,7 @@ def delete_chat(chat_id):
         if not chat:
             return jsonify({'error': 'Chat not found'}), 404
         
-        # Get user_id from chat to update user's chat list
-        user_id = chat.get('userId')
-        
-        # Delete chat
+        # Delete chat (ChatUtils.delete_chat now handles user chat list removal internally)
         success = ChatUtils.delete_chat(chat_id)
         
         if success:
@@ -252,24 +249,6 @@ def delete_chat(chat_id):
             vector_delete_result = chroma_utils.delete_chat_vector_db(chat_id)
             if not vector_delete_result['success']:
                 logger.warning(f"Chat deleted but vector DB cleanup failed: {vector_delete_result.get('error', 'Unknown error')}")
-            
-            # Remove chat from user's chat list
-            if user_id:
-                try:
-                    from config.mongodb import get_mongodb_collection
-                    from bson import ObjectId
-                    from datetime import datetime
-                    
-                    users_collection = get_mongodb_collection('users')
-                    users_collection.update_one(
-                        {"_id": ObjectId(user_id)},
-                        {
-                            "$pull": {"chats": chat_id},
-                            "$set": {"updated_at": datetime.utcnow()}
-                        }
-                    )
-                except Exception as e:
-                    logger.warning(f"[ChatAPI] Failed to update user's chat list after deletion: {e}")
             
             response_data = {
                 'message': 'Chat and vector database deleted successfully',
@@ -521,22 +500,24 @@ def chat_health_check():
 
 @chat_apis.route('/chats/health', methods=['GET'])
 def chatbot_health_check():
-    """Health check for chatbot service components"""
+    """Health check for LangChain chatbot service components"""
     try:
-        chatbot_service = get_chatbot_service()
+        from services.langchain_chatbot_service import get_langchain_chatbot_service
+        chatbot_service = get_langchain_chatbot_service()
         health_status = chatbot_service.health_check()
         
         # Determine overall health
         overall_healthy = all([
             health_status.get('chatbot_service', False),
             health_status.get('chroma_db', False),
-            health_status.get('mongodb', False)
+            health_status.get('mongodb', False),
+            health_status.get('langchain_llm', False)
         ])
         
         status_code = 200 if overall_healthy else 503
         
         return jsonify({
-            'message': 'Chatbot service health check',
+            'message': 'LangChain chatbot service health check',
             'overall_status': 'healthy' if overall_healthy else 'degraded',
             'components': health_status
         }), status_code

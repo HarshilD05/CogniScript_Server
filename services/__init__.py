@@ -1,8 +1,8 @@
 """
-Services package for LawLibra RAG Server
+Services package for CogniScript RAG Server
 Provides high-level orchestration services
 """
 
-from .chatbot_service import ChatbotService, get_chatbot_service
+from .langchain_chatbot_service import LangChainChatbotService, get_langchain_chatbot_service
 
-__all__ = ['ChatbotService', 'get_chatbot_service']
+__all__ = ['LangChainChatbotService', 'get_langchain_chatbot_service']

@@ -223,7 +223,7 @@ class ChatUtils:
     @staticmethod
     def delete_chat(chat_id: str) -> bool:
         """
-        Delete a chat
+        Delete a chat and remove it from the user's chat list
         
         Args:
             chat_id: Chat ObjectId as string
@@ -233,13 +233,39 @@ class ChatUtils:
         """
         try:
             chats_collection = get_mongodb_collection('chats')
+            
+            # First, get the chat to find the user_id
+            chat = chats_collection.find_one({"_id": ObjectId(chat_id)})
+            if not chat:
+                logger.warning(f"[ChatUtils] No chat found with ID {chat_id}")
+                return False
+            
+            user_id = chat.get('userId')
+            
+            # Delete the chat
             result = chats_collection.delete_one({"_id": ObjectId(chat_id)})
             
             if result.deleted_count > 0:
+                # Remove chat from user's chat list if user_id exists
+                if user_id:
+                    try:
+                        users_collection = get_mongodb_collection('users')
+                        users_collection.update_one(
+                            {"_id": ObjectId(user_id)},
+                            {
+                                "$pull": {"chats": chat_id},
+                                "$set": {"updated_at": datetime.utcnow()}
+                            }
+                        )
+                        logger.info(f"[ChatUtils] Removed chat {chat_id} from user {user_id}'s chat list")
+                    except Exception as e:
+                        logger.warning(f"[ChatUtils] Failed to update user's chat list: {e}")
+                        # Don't fail the whole operation if user update fails
+                
                 logger.info(f"[ChatUtils] Deleted chat {chat_id}")
                 return True
             else:
-                logger.warning(f"[ChatUtils] No chat found with ID {chat_id}")
+                logger.warning(f"[ChatUtils] Failed to delete chat {chat_id}")
                 return False
                 
         except Exception as e:

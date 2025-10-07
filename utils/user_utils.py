@@ -104,6 +104,47 @@ class UserUtils:
             return None
     
     @staticmethod
+    def get_all_users(limit: int = 50, skip: int = 0) -> list:
+        """
+        Get all users with pagination
+        
+        Args:
+            limit: Maximum number of users to return (default: 50, max: 100)
+            skip: Number of users to skip for pagination (default: 0)
+            
+        Returns:
+            List of user dictionaries
+        """
+        try:
+            users_collection = get_mongodb_collection('users')
+            
+            # Ensure limit doesn't exceed maximum
+            limit = min(limit, 100)
+            
+            # Get users with pagination
+            cursor = users_collection.find().skip(skip).limit(limit)
+            users = []
+            
+            for user_doc in cursor:
+                # Convert ObjectId to string
+                user_doc['_id'] = str(user_doc['_id'])
+                
+                # Convert datetime to ISO string if present
+                if 'created_at' in user_doc:
+                    user_doc['created_at'] = user_doc['created_at'].isoformat()
+                if 'updated_at' in user_doc:
+                    user_doc['updated_at'] = user_doc['updated_at'].isoformat()
+                    
+                users.append(user_doc)
+            
+            logger.info(f"[UserUtils] Retrieved {len(users)} users (limit: {limit}, skip: {skip})")
+            return users
+            
+        except Exception as e:
+            logger.error(f"[UserUtils] Error getting all users: {e}")
+            return []
+    
+    @staticmethod
     def update_user(user_id: str, update_data: Dict[str, Any]) -> bool:
         """
         Update user information

@@ -4,13 +4,17 @@ flask-cors
 pymongo == 4.15.1
 pydantic
 pydantic[email]
-perplexityai
 
 chromadb == 1.0.20
 
 langchain == 0.3.27
 langgraph == 0.6.5
+langchain-openai == 0.3.35
+langchain-google-genai == 2.1.12
+langchain-perplexity == 0.1.2
+langchain-groq == 0.3.8
+langchain-anthropic == 0.3.21
+
 PyMuPDF == 1.26.3
 sentence-transformers == 5.1.0
-
 langchain-huggingface == 0.3.1
