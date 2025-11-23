@@ -146,23 +146,10 @@ DEFAULT_MODELS = {
 
 CogniScript follows a modular, scalable architecture designed for production RAG applications:
 
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Client App    │────│   Flask APIs     │────│   ChromaDB      │
-│                 │    │                  │    │                 │
-│ • Web Interface │    │ • Chat Routes    │    │ • Vector Store  │
-│ • Mobile App    │    │ • Doc Routes     │    │ • Collections   │
-│ • Postman       │    │ • User Routes    │    │ • Embeddings    │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-                                │
-                       ┌──────────────────┐
-                       │     MongoDB      │
-                       │                  │
-                       │ • User Data      │
-                       │ • Chat History   │
-                       │ • Metadata       │
-                       └──────────────────┘
-```
+### 🗺️ Architecture Diagram
+
+![CogniScript Architecture Flowchart](./images/flowchart.png)
+
 
 ### 🔄 **Document Ingestion Workflow**
 1. **Upload:** Client uploads document via `/chats/{chat_id}/upload`
@@ -201,7 +188,7 @@ CogniScript leverages **ChromaDB** for efficient vector storage and retrieval:
 
 ---
 
-## 📖 **API Documentation**
+## 📖 **Documentation**
 
 ### 🔗 **Complete Endpoint Reference**
 See [**docs/routes.md**](docs/routes.md) for comprehensive API documentation including:
@@ -209,6 +196,14 @@ See [**docs/routes.md**](docs/routes.md) for comprehensive API documentation inc
 - Request body schemas and parameters
 - Expected response formats and status codes
 - Error handling and validation rules
+
+### 📊 **Data Models & Storage Architecture**
+See [**docs/data-models.md**](docs/data-models.md) for detailed information about:
+- MongoDB collection schemas (Users, Chats, Documents, Citations)
+- ChromaDB vector storage structure and metadata
+- Data relationships and entity diagrams
+- Query patterns and optimization strategies
+- Database maintenance and scalability considerations
 
 ### 🧪 **Testing & Development**
 - **Postman Collection:** Import the provided JSON for easy API testing
